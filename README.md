@@ -1,75 +1,147 @@
-# 🇵🇰 Mera Pakistan – Cultural & Heritage Exploration Platform
+# 🇵🇰 Mera Pakistan – SQA & Test Automation
 
-A full-stack monorepo web platform for exploring Pakistan's regional culture, historical landmarks, and culinary heritage — built with a dual-backend architecture and end-to-end type safety.
+A Software Quality Assurance and Test Automation project focused on validating the functionality and reliability of the Mera Pakistan web application using Python and Pytest.
 
-## ✨ Features
+## 🎯 Project Overview
 
-- 🏛️ **Heritage Explorer** – Browse historical landmarks and cultural sites across Pakistan
-- 🍛 **Culinary Heritage** – Discover regional cuisine and food culture
-- 🌍 **Regional Culture Hub** – Explore culture by region/province
-- 🔗 **Dual-Backend Architecture** – Node.js and FastAPI working together for different services
-- ✅ **End-to-End Type Safety** – OpenAPI-driven types shared across frontend and backend
-- 🧪 **Automated Testing** – Pytest test suite structured with Page Object Model (POM)
+Mera Pakistan is a full-stack cultural and heritage exploration platform that showcases Pakistan's historical landmarks, regional traditions, and culinary heritage.
 
-## 🛠️ Tech Stack
+This repository focuses on software testing practices, test organization, and automation techniques to evaluate application behavior and validate important application components.
 
-**Frontend:** React (Vite), TypeScript  
-**Backend:** Node.js, FastAPI (Python)  
-**API Contract:** OpenAPI  
-**Testing:** Pytest, Page Object Model (POM)  
-**Package Management:** pnpm (monorepo workspace)  
-**Version Control:** Git
+## 🧪 Testing Areas
 
-## 📂 Project Structure
+This project includes the following testing modules:
 
-```
+- **Single Page Testing:** Validates individual application pages and their expected behavior.
+- **Page Object Model (POM) Testing:** Uses a structured approach to organize page elements, locators, and reusable interactions.
+- **Unit/API Testing:** Contains tests for application components and API-related behavior, as implemented in the test suite.
+
+## 🛠️ Technology Stack
+
+| Category | Tools & Technologies |
+|---|---|
+| Programming Language | Python |
+| Testing Framework | Pytest |
+| Browser Automation | Selenium WebDriver |
+| Design Pattern | Page Object Model (POM) |
+| API Testing | Python Requests (if used) |
+| Version Control | Git & GitHub |
+
+## 📁 Project Structure
+
+```text
 Mera-Pakistan/
-├── artifacts/     # Build/generated artifacts
-├── lib/            # Shared libraries/utilities
-├── scripts/        # Automation & setup scripts
-├── tests/          # Pytest test suite (POM structure)
-├── pnpm-workspace.yaml
+│
+├── tests/
+│   ├── config.py
+│   ├── conftest.py
+│   ├── pages.py
+│   ├── test_single_page.py
+│   ├── test_pom.py
+│   ├── test_unit.py
+│   ├── test_functional.py
+│   ├── test_integration.py
+│   ├── test_uat.py
+│   └── run_all_tests.bat
+│
+├── artifacts/
+├── lib/
+├── scripts/
+│
 ├── package.json
-└── tsconfig.json
+└── pnpm-workspace.yaml
 ```
 
-## ⚙️ Installation & Setup
+## ⚙️ Setup & Installation
+
+**1. Clone the repository**
 
 ```bash
-# Install dependencies (monorepo)
+git clone https://github.com/saadullah684/SQA-Automation-Testing-Mera-Pakistan-.git
+```
+
+**2. Navigate to the project directory**
+
+```bash
+cd SQA-Automation-Testing-Mera-Pakistan-
+```
+
+**3. Install Python testing dependencies**
+
+```bash
+pip install pytest selenium requests
+```
+
+**4. Install application dependencies**
+
+```bash
 pnpm install
+```
 
-# Set up environment variables
-cp .env.example .env
+**5. Configure environment variables**
 
-# Seed the database (Windows)
-./seed-database.bat
+Configure the required application settings using the provided `.env.example` file, if available.
 
-# Run the app
+**6. Run the application**
+
+```bash
 pnpm dev
 ```
 
-## 🧪 Running Tests
+## ▶️ Running Tests
+
+Navigate to the testing directory:
 
 ```bash
 cd tests
-pytest
 ```
 
-## 🚀 How It Works
+Run all Pytest test cases:
 
-1. Frontend (React + Vite + TypeScript) consumes APIs from both Node.js and FastAPI backends
-2. OpenAPI specs ensure type safety end-to-end — no mismatched request/response shapes
-3. Automated Pytest suite (using Page Object Model) validates key user flows
-4. pnpm workspace manages the monorepo's shared packages efficiently
+```bash
+pytest -v
+```
 
-## 📌 Future Improvements
+Run individual testing modules:
 
-- Add CI/CD pipeline for automated testing on push
-- Expand cultural database with more regions
-- Add multilingual support (Urdu/English)
+```bash
+pytest test_single_page.py -v
+pytest test_pom.py -v
+pytest test_unit.py -v
+```
 
-## 👤 Author
+## 📌 Project Objectives
 
-**Rayyan Wamiq**  
-[GitHub](https://github.com/Rayyan-Wamiq) | [LinkedIn](https://www.linkedin.com/in/rayyan-wamiq-880244415)
+- Practice software testing methodologies.
+- Validate application functionality and expected behavior.
+- Develop reusable automation test scripts.
+- Understand Pytest test organization and execution.
+- Apply the Page Object Model design pattern.
+- Improve software quality through systematic testing.
+
+## 👨‍💻 Project Credits
+
+**Original Application Developer:** Rayyan Wamiq
+
+**SQA & Test Automation Repository:** Saad Ullah
+
+This repository is maintained for software quality assurance learning, testing practice, and portfolio demonstration. Original application development credit belongs to the respective developer.
+
+---
+
+👨‍💻 Author
+
+Saad Ullah
+Software Engineering Student | SQA & Test Automation Enthusiast
+
+GitHub: https://github.com/saadullah684
+
+LinkedIn: https://www.linkedin.com/in/saad-ullah-8b4415409/
+
+Email: usaad8104@gmail.com
+
+Project: Mera Pakistan – SQA & Test Automation
+
+**Focus Areas:** Software Quality Assurance | Python | Pytest | Selenium | Test Automation | POM
+
+🇵🇰 *Mera Pakistan – Exploring the culture and heritage of Pakistan.*
