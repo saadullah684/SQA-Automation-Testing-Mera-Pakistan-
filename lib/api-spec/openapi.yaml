@@ -1,0 +1,455 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: My Pakistan - Tourism & Cultural Discovery Platform API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: locations
+    description: Location and spot operations
+  - name: provinces
+    description: Province and city operations
+  - name: history
+    description: User search history
+  - name: saved
+    description: User saved spots
+  - name: dashboard
+    description: Dashboard summary data
+  - name: foods
+    description: Famous local foods by city or province
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /locations:
+    get:
+      operationId: listLocations
+      tags: [locations]
+      summary: List locations with optional filters
+      parameters:
+        - name: province
+          in: query
+          schema:
+            type: string
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: q
+          in: query
+          schema:
+            type: string
+          description: Search query
+      responses:
+        "200":
+          description: List of locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Location"
+
+  /locations/featured:
+    get:
+      operationId: getFeaturedLocations
+      tags: [locations]
+      summary: Get featured/top locations
+      responses:
+        "200":
+          description: Featured locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Location"
+
+  /locations/{id}:
+    get:
+      operationId: getLocation
+      tags: [locations]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Location details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Location"
+        "404":
+          description: Not found
+
+  /provinces:
+    get:
+      operationId: listProvinces
+      tags: [provinces]
+      summary: List all provinces
+      responses:
+        "200":
+          description: List of provinces
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Province"
+
+  /provinces/{slug}/cities:
+    get:
+      operationId: listCitiesByProvince
+      tags: [provinces]
+      summary: List cities in a province
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cities in the province
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/City"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard summary stats
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /history:
+    get:
+      operationId: listHistory
+      tags: [history]
+      summary: Get current user's search history
+      responses:
+        "200":
+          description: User search history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SearchHistory"
+        "401":
+          description: Unauthorized
+    post:
+      operationId: createHistory
+      tags: [history]
+      summary: Record a search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchHistoryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchHistory"
+        "401":
+          description: Unauthorized
+
+  /history/{id}:
+    delete:
+      operationId: deleteHistory
+      tags: [history]
+      summary: Delete a history entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /saved:
+    get:
+      operationId: listSaved
+      tags: [saved]
+      summary: Get current user's saved spots
+      responses:
+        "200":
+          description: Saved spots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SavedSpot"
+        "401":
+          description: Unauthorized
+    post:
+      operationId: createSaved
+      tags: [saved]
+      summary: Save a spot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SavedSpotInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedSpot"
+        "401":
+          description: Unauthorized
+
+  /saved/{id}:
+    delete:
+      operationId: deleteSaved
+      tags: [saved]
+      summary: Remove a saved spot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /foods:
+    get:
+      operationId: listFoods
+      tags: [foods]
+      summary: List famous foods, optionally filtered by city or province
+      parameters:
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: province
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of food items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FoodItem"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    Location:
+      type: object
+      required: [id, name, city, province, category, description, imageUrl, rating]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        city:
+          type: string
+        province:
+          type: string
+        category:
+          type: string
+          description: "e.g. monument, nature, food, culture, adventure"
+        description:
+          type: string
+        imageUrl:
+          type: string
+        rating:
+          type: number
+        culturalInsight:
+          type: ["string", "null"]
+        cuisine:
+          type: ["string", "null"]
+        lat:
+          type: ["number", "null"]
+        lng:
+          type: ["number", "null"]
+        isFeatured:
+          type: boolean
+
+    Province:
+      type: object
+      required: [id, name, slug, description, imageUrl, cityCount]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        cityCount:
+          type: integer
+
+    City:
+      type: object
+      required: [id, name, province, description, imageUrl]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        province:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+
+    DashboardSummary:
+      type: object
+      required: [totalLocations, totalProvinces, totalCities, topRatedLocations, categoryCounts]
+      properties:
+        totalLocations:
+          type: integer
+        totalProvinces:
+          type: integer
+        totalCities:
+          type: integer
+        topRatedLocations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Location"
+        categoryCounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryCount"
+
+    CategoryCount:
+      type: object
+      required: [category, count]
+      properties:
+        category:
+          type: string
+        count:
+          type: integer
+
+    SearchHistory:
+      type: object
+      required: [id, userId, query, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        query:
+          type: string
+        locationId:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+
+    SearchHistoryInput:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+        locationId:
+          type: ["integer", "null"]
+
+    SavedSpot:
+      type: object
+      required: [id, userId, locationId, createdAt, location]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        locationId:
+          type: integer
+        createdAt:
+          type: string
+        location:
+          $ref: "#/components/schemas/Location"
+
+    SavedSpotInput:
+      type: object
+      required: [locationId]
+      properties:
+        locationId:
+          type: integer
+
+    FoodItem:
+      type: object
+      required: [id, name, description, imageUrl, city, province, isSignature]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        city:
+          type: string
+        province:
+          type: string
+        isSignature:
+          type: boolean
